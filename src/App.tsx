@@ -1,50 +1,81 @@
-import { createBrowserRouter, Link, redirect, RouterProvider } from 'react-router-dom';
-import CreateAccount from './CreateAccount';
-import { auth } from './firebase';
-import SignIn from './SignIn';
+import CssBaseline from '@mui/joy/CssBaseline';
+import { CssVarsProvider, StyledEngineProvider } from '@mui/joy/styles';
+import { createBrowserRouter, redirect, RouterProvider } from 'react-router-dom';
+import DashboardLayout from './layouts/DashboardLayout';
+import { auth } from './lib/firebase';
+
+import CircularProgress from '@mui/joy/CircularProgress';
+import { PropsWithChildren } from 'react';
+import AuthLayout from './layouts/AuthLayout';
+import { AuthProvider } from './lib/auth';
+import CreateAccount from './routes/CreateAccount';
+import SignIn from './routes/SignIn';
 
 const router = createBrowserRouter([
   {
-    path: '/',
-    element: (
-      <p>
-        Hello, please <Link to='/sign-in'>sign in</Link> or{' '}
-        <Link to='/create-account'>create an account</Link>.
-      </p>
-    ),
+    element: <DashboardLayout />,
+    children: [
+      {
+        path: '/',
+        element: <p>Insert content here...</p>,
+      },
+    ],
   },
   {
-    path: '/protected',
-    element: (
-      <p>
-        You’re signed in!{' '}
-        <button
-          onClick={() => {
-            auth.signOut().then(() => {
-              router.navigate('/');
-            });
-          }}
-        >
-          Sign Out
-        </button>
-      </p>
-    ),
-    loader: () => {
-      return auth.currentUser ?? redirect('/sign-in');
-    },
-  },
-  {
-    path: '/sign-in',
-    element: <SignIn />,
-  },
-  {
-    path: '/create-account',
-    element: <CreateAccount />,
+    element: <AuthLayout />,
+    children: [
+      {
+        path: '/sign-in',
+        element: <SignIn />,
+      },
+      {
+        path: '/create-account',
+        element: <CreateAccount />,
+      },
+      {
+        path: '/sign-out',
+        loader: async () => {
+          await auth.signOut();
+          return redirect('/sign-in');
+        },
+      },
+    ],
   },
 ]);
 
-function App() {
-  return <RouterProvider router={router} />;
+export default function App() {
+  return (
+    <StylingProvider>
+      <AuthProvider>
+        <RouterProvider router={router} fallbackElement={<LoadingView />} />
+      </AuthProvider>
+    </StylingProvider>
+  );
 }
 
-export default App;
+function StylingProvider({ children }: PropsWithChildren) {
+  return (
+    <StyledEngineProvider injectFirst>
+      <CssVarsProvider>
+        <CssBaseline />
+        {children}
+      </CssVarsProvider>
+    </StyledEngineProvider>
+  );
+}
+
+function LoadingView() {
+  return (
+    <div
+      style={{
+        width: '100vw',
+        height: '100vh',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+      }}
+    >
+      <CircularProgress />
+    </div>
+  );
+}
