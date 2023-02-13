@@ -10,6 +10,7 @@ import AuthLayout from './layouts/AuthLayout';
 import { AuthProvider } from './lib/auth';
 import CreateAccount from './routes/CreateAccount';
 import SignIn from './routes/SignIn';
+import AvailabilitySelector from './routes/AvailabilityForm';
 
 const router = createBrowserRouter([
   {
@@ -17,7 +18,7 @@ const router = createBrowserRouter([
     children: [
       {
         path: '/',
-        element: <p>Insert content here...</p>,
+        element: <AvailabilitySelector />,
       },
     ],
   },
