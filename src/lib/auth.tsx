@@ -30,9 +30,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         setUser(null);
       }
     });
-  });
+  }, []);
 
   const signIn = async (email: string, password: string) => {
+    setUser(undefined); // prevents redirect to sign-in page
     const result = await signInWithEmailAndPassword(auth, email, password);
     const profile = await getDoc(doc(db, 'users', result.user.uid));
     setUser(profile.data() as User);
@@ -44,6 +45,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   };
 
   const createAccount = async (email: string, password: string) => {
+    setUser(undefined); // prevents redirect to sign-in page
     const result = await createUserWithEmailAndPassword(auth, email, password);
     const user = { id: result.user.uid, email: result.user.email! };
     await setDoc(doc(db, 'users', result.user.uid), user);
