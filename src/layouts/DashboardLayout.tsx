@@ -10,6 +10,7 @@ import SideMenu from '../components/SideMenu';
 import MeetingRoomRoundedIcon from '@mui/icons-material/MeetingRoomRounded';
 import MenuIcon from '@mui/icons-material/Menu';
 import PeopleAltRoundedIcon from '@mui/icons-material/PeopleAltRounded';
+import EventAvailableIcon from '@mui/icons-material/EventAvailable';
 import { Outlet, useNavigate } from 'react-router-dom';
 import { useAuth } from 'src/lib/auth';
 
@@ -20,6 +21,11 @@ const sections: MenuSectionProps[] = [
         title: 'Groups',
         icon: <PeopleAltRoundedIcon />,
         path: '/',
+      },
+      {
+        title: 'Schedule Meeting',
+        icon: <EventAvailableIcon/>,
+        path: '/schedule-meeting',
       },
     ],
   },
