@@ -1,5 +1,5 @@
 import { ReactElement, useEffect, useState } from 'react';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 import List from '@mui/joy/List';
 import ListItem from '@mui/joy/ListItem';
@@ -7,12 +7,6 @@ import ListItemButton from '@mui/joy/ListItemButton';
 import ListItemContent from '@mui/joy/ListItemContent';
 import ListItemDecorator from '@mui/joy/ListItemDecorator';
 import ListSubheader from '@mui/joy/ListSubheader';
-
-import AssistantPhotoRoundedIcon from '@mui/icons-material/AssistantPhotoRounded';
-import DeleteRoundedIcon from '@mui/icons-material/DeleteRounded';
-import DraftsRoundedIcon from '@mui/icons-material/DraftsRounded';
-import InboxRoundedIcon from '@mui/icons-material/InboxRounded';
-import OutboxRoundedIcon from '@mui/icons-material/OutboxRounded';
 
 export interface MenuSectionProps {
   title?: string;
