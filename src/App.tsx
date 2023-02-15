@@ -11,7 +11,7 @@ import { AuthProvider } from './lib/auth';
 import CreateAccount from './routes/CreateAccount';
 import SignIn from './routes/SignIn';
 import AvailabilitySelector from './routes/AvailabilityForm';
-import ScheduleMeeting from './routes/ScheduleMeeting';
+import ScheduleMeeting, { loadUsers } from './routes/ScheduleMeeting';
 
 const router = createBrowserRouter([
   {
@@ -24,6 +24,7 @@ const router = createBrowserRouter([
       {
         path: '/schedule-meeting',
         element: <ScheduleMeeting />,
+        loader: loadUsers,
       },
     ],
   },

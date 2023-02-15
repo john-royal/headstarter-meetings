@@ -3,7 +3,7 @@ import { doc, getDoc, setDoc } from 'firebase/firestore';
 import { createContext, useContext, useEffect, useState } from 'react';
 import { auth, db } from './firebase';
 
-interface User {
+export interface User {
   id: string;
   email: string;
 }
