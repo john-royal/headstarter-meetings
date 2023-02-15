@@ -24,7 +24,7 @@ const sections: MenuSectionProps[] = [
       },
       {
         title: 'Schedule Meeting',
-        icon: <EventAvailableIcon/>,
+        icon: <EventAvailableIcon />,
         path: '/schedule-meeting',
       },
     ],
