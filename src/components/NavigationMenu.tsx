@@ -51,7 +51,7 @@ export default function NavigationMenu({ sections }: { sections: MenuSectionProp
   return (
     <List size='sm' sx={{ '--List-item-radius': '8px' }}>
       {sections.map(({ title, items }, index) => (
-        <ListItem nested key={index}>
+        <ListItem nested key={index} sx={{ mb: 2 }}>
           {title && <ListSubheader>{title}</ListSubheader>}
           <List
             aria-labelledby='nav-list-browse'

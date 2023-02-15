@@ -1,7 +1,7 @@
 import CssBaseline from '@mui/joy/CssBaseline';
 import { CssVarsProvider, StyledEngineProvider } from '@mui/joy/styles';
 import { createBrowserRouter, redirect, RouterProvider } from 'react-router-dom';
-import DashboardLayout from './layouts/DashboardLayout';
+import DashboardLayout, { DashboardError } from './layouts/DashboardLayout';
 import { auth } from './lib/firebase';
 
 import CircularProgress from '@mui/joy/CircularProgress';
@@ -16,13 +16,18 @@ import ScheduleMeeting, { loadUsers } from './routes/ScheduleMeeting';
 const router = createBrowserRouter([
   {
     element: <DashboardLayout />,
+    errorElement: <DashboardError />,
     children: [
       {
         path: '/',
+        element: <p>Select an option on the left.</p>,
+      },
+      {
+        path: '/availability',
         element: <AvailabilitySelector />,
       },
       {
-        path: '/schedule-meeting',
+        path: '/new-meeting',
         element: <ScheduleMeeting />,
         loader: loadUsers,
       },
