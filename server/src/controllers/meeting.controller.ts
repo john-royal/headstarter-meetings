@@ -1,4 +1,5 @@
 import { Router } from 'express';
+import fetch from 'isomorphic-unfetch';
 import sendEmail from '../helpers/email';
 import { IUser, User } from '../models/user.model';
 
