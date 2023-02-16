@@ -1,4 +1,4 @@
-# Project Title 
+# Company Case - Headstarter 
 
 A Platform where groups in Headstarter will be able to schedule times to meet on a Calendar and video call each other on the platform.
 
