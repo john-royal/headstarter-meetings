@@ -1,5 +1,6 @@
 # Project Title 
-Brief project description 2-3 sentences.
+
+A Platform where groups in Headstarter will be able to schedule times to meet on a Calendar and video call each other on the platform.
 
 ## Table of Contents
 
@@ -11,7 +12,7 @@ Brief project description 2-3 sentences.
 - [Languages](#languages)
 
 ## About
-Write about 1-2 paragraphs describing the purpose of your project.
+The features include are: 1. React Platform with user authentication where people can log in and be put into groups 2. Shared calendar scheduler for users to input their times they are not available 3. Video call feature for groups to be able to talk to one another 4. Schedule team meetings on the calendar and send email (or some notification) to user before meeting
 
 ## Getting Started
 These instructions will get you a copy of the project up and running on your local machine for development and testing purposes.
