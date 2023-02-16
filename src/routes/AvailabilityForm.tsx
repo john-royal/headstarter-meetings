@@ -3,38 +3,24 @@ import Checkbox from '@mui/joy/Checkbox';
 import Chip from '@mui/joy/Chip';
 import Table from '@mui/joy/Table';
 import Typography from '@mui/joy/Typography';
-import { doc, setDoc } from 'firebase/firestore';
 import { ChangeEvent, useEffect, useState } from 'react';
+import { LoaderFunction, useLoaderData } from 'react-router-dom';
 import { useAuth } from 'src/lib/auth';
-import { db } from 'src/lib/firebase';
 
 import CheckIcon from '@mui/icons-material/Check';
 import SyncIcon from '@mui/icons-material/Sync';
 import SyncDisabledIcon from '@mui/icons-material/SyncDisabled';
 
 const DAYS_OF_WEEK = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-const HOURS = (() => {
-  const hours = [];
-  for (let hour = 6; hour < 12; hour++) {
-    hours.push(`${hour} am`);
-  }
-  hours.push('12 pm');
-  for (let hour = 1; hour <= 10; hour++) {
-    hours.push(`${hour} pm`);
-  }
-  return hours;
-})();
-
-const initialAvailability = (() => {
-  const availability: Record<string, Record<string, boolean>> = {};
-  for (const day of DAYS_OF_WEEK) {
-    availability[day] = {};
-    for (const hour of HOURS) {
-      availability[day][hour] = false;
-    }
-  }
-  return availability;
-})();
+const HOURS = Array(24)
+  .fill(0)
+  .map((_, hour) => {
+    return {
+      hour,
+      formattedHour: hour < 12 ? `${hour} am` : hour === 12 ? '12 pm' : `${hour - 12} pm`,
+    };
+  })
+  .filter(({ hour }) => hour > 5);
 
 enum Status {
   SAVED,
@@ -42,22 +28,23 @@ enum Status {
   SAVING,
 }
 
-export default function AvailabilityForm() {
-  const [availability, setAvailability] = useState(initialAvailability);
-  const debouncedAvailability = useDebounce(availability, 1000);
-  const [status, setStatus] = useState(Status.SAVED);
+function AvailabilityForm() {
   const { user } = useAuth();
+  const [availability, setAvailability] = useState<number[][]>(useLoaderData() as number[][]);
+  const [status, setStatus] = useState(Status.SAVED);
+  const debounced = useDebounce(availability, 1000);
 
-  const changeHandler = (day: string, hour: string) => {
+  const changeHandler = (day: number, hour: number) => {
     return (e: ChangeEvent<HTMLInputElement>) => {
       setStatus(Status.PENDING);
-      setAvailability((prevAvailability) => ({
-        ...prevAvailability,
-        [day]: {
-          ...prevAvailability[day],
-          [hour]: e.target.checked,
-        },
-      }));
+      setAvailability((prev) => {
+        const next = [...prev];
+        next[day][hour] = e.target.checked ? 1 : 0;
+        console.log(
+          `Updated ${DAYS_OF_WEEK[day]} ${HOURS[hour].formattedHour} to ${next[day][hour]}`,
+        );
+        return next;
+      });
     };
   };
 
@@ -65,21 +52,22 @@ export default function AvailabilityForm() {
     if (user == null) return;
 
     setStatus(Status.SAVING);
-    setDoc(
-      doc(db, 'users', user.id),
-      {
-        availability: debouncedAvailability,
-      },
-      { merge: true },
-    )
-      .then(() => {
+    fetch(`/api/users/${user._id}`, {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ availability: debounced }),
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error('Failed to save availability');
+        }
         setStatus(Status.SAVED);
       })
       .catch((error) => {
+        console.error(error);
         setStatus(Status.PENDING);
-        alert(error);
       });
-  }, [user, debouncedAvailability]);
+  }, [user, debounced]);
 
   return (
     <Box>
@@ -108,15 +96,15 @@ export default function AvailabilityForm() {
           </tr>
         </thead>
         <tbody>
-          {HOURS.map((hour) => (
+          {HOURS.map(({ hour, formattedHour }) => (
             <tr key={hour}>
-              <td>{hour}</td>
+              <td>{formattedHour}</td>
 
-              {DAYS_OF_WEEK.map((day) => (
-                <td key={day}>
+              {DAYS_OF_WEEK.map((dayText, day) => (
+                <td key={`${day} ${hour}`}>
                   <Checkbox
-                    aria-label={`${day} ${hour}`}
-                    checked={availability[day][hour]}
+                    aria-label={`${dayText} ${formattedHour}`}
+                    checked={availability[day][hour] === 1}
                     onChange={changeHandler(day, hour)}
                   />
                 </td>
@@ -128,6 +116,15 @@ export default function AvailabilityForm() {
     </Box>
   );
 }
+
+const loadAvailability: LoaderFunction = async () => {
+  const response = await fetch('/api/sessions');
+  const json = await response.json();
+  return json.user.availability;
+};
+
+export default AvailabilityForm;
+export { loadAvailability };
 
 function StatusChip({ status }: { status: Status }) {
   switch (status) {

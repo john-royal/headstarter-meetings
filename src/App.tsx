@@ -1,17 +1,16 @@
+import CircularProgress from '@mui/joy/CircularProgress';
 import CssBaseline from '@mui/joy/CssBaseline';
 import { CssVarsProvider, StyledEngineProvider } from '@mui/joy/styles';
-import { createBrowserRouter, redirect, RouterProvider } from 'react-router-dom';
-import DashboardLayout, { DashboardError } from './layouts/DashboardLayout';
-import { auth } from './lib/firebase';
-
-import CircularProgress from '@mui/joy/CircularProgress';
 import { PropsWithChildren } from 'react';
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+
 import AuthLayout from './layouts/AuthLayout';
+import DashboardLayout, { DashboardError } from './layouts/DashboardLayout';
 import { AuthProvider } from './lib/auth';
+import AvailabilitySelector, { loadAvailability } from './routes/AvailabilityForm';
 import CreateAccount from './routes/CreateAccount';
-import SignIn from './routes/SignIn';
-import AvailabilitySelector from './routes/AvailabilityForm';
 import ScheduleMeeting, { loadUsers } from './routes/ScheduleMeeting';
+import SignIn from './routes/SignIn';
 
 const router = createBrowserRouter([
   {
@@ -25,6 +24,7 @@ const router = createBrowserRouter([
       {
         path: '/availability',
         element: <AvailabilitySelector />,
+        loader: loadAvailability,
       },
       {
         path: '/new-meeting',
@@ -43,13 +43,6 @@ const router = createBrowserRouter([
       {
         path: '/create-account',
         element: <CreateAccount />,
-      },
-      {
-        path: '/sign-out',
-        loader: async () => {
-          await auth.signOut();
-          return redirect('/sign-in');
-        },
       },
     ],
   },

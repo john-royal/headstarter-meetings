@@ -118,6 +118,7 @@ export default function DashboardLayout({ children }: { children?: ReactElement 
                 </IconButton>
               }
               menus={[
+                { label: `Hi, ${user?.name ?? 'User'}` },
                 {
                   label: 'Sign Out',
                   onClick: () => {

@@ -9,11 +9,9 @@ import {
   Select,
   Typography,
 } from '@mui/joy';
-import { collection, doc, getDocs, setDoc } from 'firebase/firestore';
 import { useState } from 'react';
 import { LoaderFunction, useLoaderData } from 'react-router-dom';
 import { User } from 'src/lib/auth';
-import { db } from 'src/lib/firebase';
 
 function ScheduleMeetingView() {
   const users = useLoaderData() as User[];
@@ -27,13 +25,26 @@ function ScheduleMeetingView() {
   const handleScheduleMeeting = () => {
     const startsAt = new Date(`${date} ${time}`);
     const endsAt = new Date(startsAt.getTime() + duration * 60 * 1000);
-    setDoc(doc(collection(db, 'meetings')), {
-      startsAt,
-      endsAt,
-      attendees: attendees.map((attendee) => doc(db, 'users', attendee.id)),
-    })
-      .then(() => alert('Success ' + JSON.stringify({ startsAt, endsAt, attendees })))
-      .catch((error) => alert(error));
+
+    const startDay = startsAt.getDay();
+    const startHour = startsAt.getHours();
+    const endDay = endsAt.getDay();
+    const endHour = endsAt.getHours();
+
+    // availability check
+    for (const { name, email, availability } of attendees) {
+      for (let day = startDay; day < endDay || day === startDay; day++) {
+        for (let hour = startHour; hour < endHour || hour === startHour; hour++) {
+          if (availability[day][hour] === 0) {
+            alert(`${name} (${email}) is not available at this time.`);
+            return;
+          }
+        }
+      }
+    }
+
+    // TODO: schedule meeting
+    console.log(startsAt, endsAt, attendees);
   };
 
   return (
@@ -75,7 +86,7 @@ function ScheduleMeetingView() {
           <Autocomplete
             multiple
             options={users}
-            getOptionLabel={(user: User) => user.email}
+            getOptionLabel={(user: User) => `${user.name} (${user.email})`}
             value={attendees}
             onChange={(_, newValue) => {
               setAttendees(newValue);
@@ -95,15 +106,13 @@ function ScheduleMeetingView() {
 }
 
 export const loadUsers: LoaderFunction = async () => {
-  return await getDocs(collection(db, 'users')).then((querySnapshot) => {
-    return querySnapshot.docs.map((doc) => {
-      const user = doc.data() as User;
-      return {
-        id: user.id,
-        email: user.email,
-      };
-    });
-  });
+  const response = await fetch('/api/users');
+  const json = await response.json();
+  if (json.success) {
+    return json.users as User[];
+  } else {
+    throw new Error(json.message);
+  }
 };
 
 export default ScheduleMeetingView;

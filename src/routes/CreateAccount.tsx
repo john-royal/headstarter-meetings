@@ -10,6 +10,7 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from 'src/lib/auth';
 
 interface FormElements extends HTMLFormControlsCollection {
+  name: HTMLInputElement;
   email: HTMLInputElement;
   password: HTMLInputElement;
 }
@@ -29,13 +30,14 @@ export default function CreateAccount() {
 
     const elements = e.currentTarget.elements;
 
+    const name = elements.name.value;
     const email = elements.email.value;
     const password = elements.password.value;
 
     setLoading(true);
     setError('');
 
-    createAccount(email, password)
+    createAccount({ name, email, password })
       .then(() => {
         navigate('/');
       })
@@ -65,6 +67,10 @@ export default function CreateAccount() {
       {error && <Alert color='danger'>{error}</Alert>}
 
       <form onSubmit={handleSubmit}>
+        <FormControl sx={{ mb: 2 }}>
+          <FormLabel>Name</FormLabel>
+          <Input name='name' type='text' placeholder='Jane Doe' />
+        </FormControl>
         <FormControl sx={{ mb: 2 }}>
           <FormLabel>Email</FormLabel>
           <Input name='email' type='email' placeholder='johndoe@email.com' />

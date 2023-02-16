@@ -1,55 +1,74 @@
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth';
-import { doc, getDoc, setDoc } from 'firebase/firestore';
-import { createContext, useContext, useEffect, useState } from 'react';
-import { auth, db } from './firebase';
+import { createContext, useContext } from 'react';
+import useSWR from 'swr';
 
 export interface User {
-  id: string;
+  _id: string;
+  name: string;
   email: string;
+  availability: number[][];
 }
 
 interface Auth {
   user?: User | null;
   signIn: (email: string, password: string) => Promise<void>;
   signOut: () => Promise<void>;
-  createAccount: (email: string, password: string) => Promise<void>;
+  createAccount: (user: { name: string; email: string; password: string }) => Promise<void>;
 }
 
 const AuthContext = createContext({} as Auth);
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
-  const [user, setUser] = useState<User | null | undefined>(undefined);
-
-  useEffect(() => {
-    return auth.onAuthStateChanged((user) => {
-      if (user != null) {
-        getDoc(doc(db, 'users', user.uid)).then((profile) => {
-          setUser(profile.data() as User);
-        });
-      } else {
-        setUser(null);
-      }
-    });
-  }, []);
+  const { data: user, mutate } = useSWR<User | null>('/api/sessions', async (url) => {
+    const response = await fetch(url);
+    if (response.ok) {
+      const json = await response.json();
+      return json.user as User;
+    } else {
+      return null;
+    }
+  });
 
   const signIn = async (email: string, password: string) => {
-    setUser(undefined); // prevents redirect to sign-in page
-    const result = await signInWithEmailAndPassword(auth, email, password);
-    const profile = await getDoc(doc(db, 'users', result.user.uid));
-    setUser(profile.data() as User);
+    const response = await fetch('/api/sessions', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, password }),
+    });
+
+    try {
+      const json = await response.json();
+      if (json.success) {
+        await mutate();
+      } else {
+        throw new Error(json.message);
+      }
+    } catch (error) {
+      throw new Error('Cannot sign in');
+    }
   };
 
   const signOut = async () => {
-    await auth.signOut();
-    setUser(null);
+    await fetch('/api/sessions', { method: 'DELETE' });
+    await mutate();
   };
 
-  const createAccount = async (email: string, password: string) => {
-    setUser(undefined); // prevents redirect to sign-in page
-    const result = await createUserWithEmailAndPassword(auth, email, password);
-    const user = { id: result.user.uid, email: result.user.email! };
-    await setDoc(doc(db, 'users', result.user.uid), user);
-    setUser(user);
+  const createAccount = async (user: { name: string; email: string; password: string }) => {
+    const response = await fetch('/api/users', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(user),
+    });
+
+    try {
+      const json = await response.json();
+      if (json.success) {
+        await mutate();
+      } else {
+        throw new Error(json.message);
+      }
+    } catch (error) {
+      throw new Error('Cannot create account');
+    }
   };
 
   const state = {
