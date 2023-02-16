@@ -4,8 +4,10 @@ import express, { ErrorRequestHandler } from 'express';
 import session from 'express-session';
 import helmet from 'helmet';
 import mongoose from 'mongoose';
+import meetingController from './controllers/meeting.controller';
 import sessionController from './controllers/session.controller';
 import userController from './controllers/user.controller';
+import zoomController from './controllers/zoom.controller';
 
 dotenv.config();
 
@@ -33,6 +35,8 @@ app.get('/api', (req, res) => {
 
 app.use('/api/sessions', sessionController);
 app.use('/api/users', userController);
+app.use('/api/meetings', meetingController);
+app.use('/api/zoom', zoomController);
 
 app.use(((error, req, res, _) => {
   res.status(500).send({ success: false, error });

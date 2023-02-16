@@ -41,7 +41,6 @@ userController.get('/:id', async (req, res, next) => {
 userController.patch('/:id', async (req, res, next) => {
   try {
     const id = req.params.id;
-    console.log(req.body);
     const user = await User.findByIdAndUpdate(id, req.body);
     res.json({ success: true, user });
   } catch (error) {

@@ -36,8 +36,10 @@ function MenuItem({ title, icon, path }: MenuItemProps) {
         component={'a'}
         href={path}
         onClick={(e) => {
-          e.preventDefault();
-          navigate(path);
+          if (!path.startsWith('/api')) {
+            e.preventDefault();
+            navigate(path);
+          }
         }}
       >
         <ListItemDecorator sx={{ color: 'neutral.500' }}>{icon}</ListItemDecorator>

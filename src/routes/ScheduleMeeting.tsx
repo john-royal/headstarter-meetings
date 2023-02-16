@@ -16,6 +16,7 @@ import { User } from 'src/lib/auth';
 function ScheduleMeetingView() {
   const users = useLoaderData() as User[];
 
+  const [topic, setTopic] = useState('');
   const [date, setDate] = useState('');
   const [time, setTime] = useState('');
   const [duration, setDuration] = useState(30);
@@ -43,8 +44,28 @@ function ScheduleMeetingView() {
       }
     }
 
-    // TODO: schedule meeting
-    console.log(startsAt, endsAt, attendees);
+    fetch('/api/meetings', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        topic,
+        startsAt,
+        duration,
+        attendees: attendees.map(({ _id }) => _id),
+      }),
+    })
+      .then(async (response) => {
+        console.log(await response.json());
+        if (response.ok) {
+          alert('Meeting scheduled!');
+        } else {
+          alert('Something went wrong.');
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+        alert('Something went wrong.');
+      });
   };
 
   return (
@@ -55,6 +76,16 @@ function ScheduleMeetingView() {
 
       <form>
         <FormControl sx={{ width: 300 }}>
+          <FormLabel>Topic</FormLabel>
+          <Input
+            type='text'
+            placeholder='Topic'
+            value={topic}
+            onChange={(e) => setTopic(e.target.value)}
+            sx={{ width: 300 }}
+          />
+        </FormControl>
+        <FormControl sx={{ width: 300, marginTop: '20px' }}>
           <FormLabel>Date</FormLabel>
           <Input
             type='date'

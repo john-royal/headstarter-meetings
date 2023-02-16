@@ -5,6 +5,9 @@ interface IUser {
   name: string;
   email: string;
   password: string;
+  zoomUserId?: string;
+  zoomAccessToken?: string;
+  zoomRefreshToken?: string;
   availability: number[][];
 }
 
@@ -18,6 +21,9 @@ const schema = new Schema<IUser, UserModel, IUserMethods>({
   name: { type: String, required: true },
   email: { type: String, required: true, unique: true },
   password: { type: String, required: true },
+  zoomUserId: { type: String, required: false },
+  zoomAccessToken: { type: String, required: false },
+  zoomRefreshToken: { type: String, required: false },
   availability: {
     type: [[Number]],
     required: true,

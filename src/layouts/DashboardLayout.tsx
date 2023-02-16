@@ -14,6 +14,7 @@ import MenuIcon from '@mui/icons-material/Menu';
 import PeopleAltRoundedIcon from '@mui/icons-material/PeopleAltRounded';
 import PersonIcon from '@mui/icons-material/Person';
 import ScheduleIcon from '@mui/icons-material/Schedule';
+import VideocamIcon from '@mui/icons-material/Videocam';
 
 const sections: MenuSectionProps[] = [
   {
@@ -23,6 +24,11 @@ const sections: MenuSectionProps[] = [
         title: 'Availability',
         icon: <ScheduleIcon />,
         path: '/availability',
+      },
+      {
+        title: 'Zoom',
+        icon: <VideocamIcon />,
+        path: '/api/zoom/connect',
       },
     ],
   },
