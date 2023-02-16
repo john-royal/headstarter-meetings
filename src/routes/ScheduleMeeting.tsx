@@ -1,3 +1,4 @@
+import Check from '@mui/icons-material/Check';
 import {
   Autocomplete,
   Box,
@@ -9,6 +10,7 @@ import {
   Select,
   Typography,
 } from '@mui/joy';
+import Alert from '@mui/joy/Alert';
 import { useState } from 'react';
 import { LoaderFunction, useLoaderData } from 'react-router-dom';
 import { User } from 'src/lib/auth';
@@ -22,6 +24,8 @@ function ScheduleMeetingView() {
   const [duration, setDuration] = useState(30);
   const [attendees, setAttendees] = useState<User[]>([]);
   const [attendeesInputValue, setAttendeesInputValue] = useState('');
+  const [error, setError] = useState('');
+  const [success, setSuccess] = useState(false);
 
   const handleScheduleMeeting = () => {
     const startsAt = new Date(`${date} ${time}`);
@@ -37,12 +41,14 @@ function ScheduleMeetingView() {
       for (let day = startDay; day < endDay || day === startDay; day++) {
         for (let hour = startHour; hour < endHour || hour === startHour; hour++) {
           if (availability[day][hour] === 0) {
-            alert(`${name} (${email}) is not available at this time.`);
+            setError(`${name} (${email}) is not available at this time.`);
             return;
           }
         }
       }
     }
+
+    setError('');
 
     fetch('/api/meetings', {
       method: 'POST',
@@ -57,14 +63,14 @@ function ScheduleMeetingView() {
       .then(async (response) => {
         console.log(await response.json());
         if (response.ok) {
-          alert('Meeting scheduled!');
+          setSuccess(true);
         } else {
-          alert('Something went wrong.');
+          setError('Something went wrong.');
         }
       })
       .catch((error) => {
         console.error(error);
-        alert('Something went wrong.');
+        setError('Something went wrong.');
       });
   };
 
@@ -73,6 +79,13 @@ function ScheduleMeetingView() {
       <Typography level='h3' component='h1'>
         Schedule Meeting
       </Typography>
+
+      {error && <Alert color='danger'>{error}</Alert>}
+      {success && (
+        <Alert color='success' startDecorator={<Check />}>
+          Your meeting has been scheduled successfully.
+        </Alert>
+      )}
 
       <form>
         <FormControl sx={{ width: 300 }}>

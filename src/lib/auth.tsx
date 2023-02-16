@@ -35,15 +35,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       body: JSON.stringify({ email, password }),
     });
 
-    try {
-      const json = await response.json();
-      if (json.success) {
-        await mutate();
-      } else {
-        throw new Error(json.message);
-      }
-    } catch (error) {
-      throw new Error('Cannot sign in');
+    const json = await response.json();
+    if (json.success) {
+      await mutate();
+    } else {
+      throw new Error(json.message);
     }
   };
 
@@ -59,15 +55,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       body: JSON.stringify(user),
     });
 
-    try {
-      const json = await response.json();
-      if (json.success) {
-        await mutate();
-      } else {
-        throw new Error(json.message);
-      }
-    } catch (error) {
-      throw new Error('Cannot create account');
+    const json = await response.json();
+    if (json.success) {
+      await mutate();
+    } else {
+      throw new Error(json.message);
     }
   };
 

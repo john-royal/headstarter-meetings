@@ -1,3 +1,5 @@
+import Check from '@mui/icons-material/Check';
+import Alert from '@mui/joy/Alert';
 import CircularProgress from '@mui/joy/CircularProgress';
 import CssBaseline from '@mui/joy/CssBaseline';
 import { CssVarsProvider, StyledEngineProvider } from '@mui/joy/styles';
@@ -25,6 +27,14 @@ const router = createBrowserRouter([
         path: '/availability',
         element: <AvailabilitySelector />,
         loader: loadAvailability,
+      },
+      {
+        path: '/zoom',
+        element: (
+          <Alert color='success' startDecorator={<Check />}>
+            Your Zoom account has been connected.
+          </Alert>
+        ),
       },
       {
         path: '/new-meeting',

@@ -33,13 +33,8 @@ const sections: MenuSectionProps[] = [
     ],
   },
   {
-    title: 'Organization',
+    title: 'Meetings',
     items: [
-      {
-        title: 'Groups',
-        icon: <PeopleAltRoundedIcon />,
-        path: '/groups',
-      },
       {
         title: 'New Meeting',
         icon: <EventAvailableIcon />,
