@@ -17,62 +17,28 @@ These instructions will get you a copy of the project up and running on your loc
 
 ## Installing
 Installation instructions.
-
-## Usage
 1. Clone Template
 
 ```
-git clone https://github.com/igdev116/vite-react-ts-eslint-prettier.git
+git clone https://github.com/john-royal/headstarter-meetings
 ```
 
 2. Install Packages
 
 ```
-yarn install
+pnpm install
 ```
 
 3. Start Project
 
 ```
-yarn dev
+npm run dev
 ```
 
 4. If you using git, delete the existing folder .git after cloning (open `git bash` or other terminal)
 
 ```
 rm -rf .git
-```
-
-## **Options ✍️**
-
-1. Check lint
-
-```
-yarn lint
-```
-
-2. Fix lint
-
-```
-yarn lint:fix
-```
-
-3. Check prettier
-
-```
-yarn prettier
-```
-
-4. Fix prettier
-
-```
-yarn prettier:fix
-```
-
-5. Fix lint and prettier
-
-```
-yarn format
 ```
 
 ## Contributing
