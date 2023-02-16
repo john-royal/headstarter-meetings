@@ -8,6 +8,7 @@ Brief project description 2-3 sentences.
 - [Installing](#installing)
 - [Usage](#usage)
 - [Contributing](#contributing)
+- [Languages](#languages)
 
 ## About
 Write about 1-2 paragraphs describing the purpose of your project.
@@ -46,3 +47,9 @@ Contributors names.
 - John Royal
 - Maaz Hussaini
 - Russell Gomes
+
+##Languages
+
+Vite TypeScript React
+
+
