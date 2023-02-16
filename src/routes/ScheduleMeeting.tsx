@@ -51,7 +51,7 @@ function ScheduleMeetingView() {
         topic,
         startsAt,
         duration,
-        attendees: attendees.map(({ _id }) => _id),
+        attendees,
       }),
     })
       .then(async (response) => {
