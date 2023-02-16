@@ -11,7 +11,6 @@ import SideMenu from '../components/SideMenu';
 import EventAvailableIcon from '@mui/icons-material/EventAvailable';
 import MeetingRoomRoundedIcon from '@mui/icons-material/MeetingRoomRounded';
 import MenuIcon from '@mui/icons-material/Menu';
-import PeopleAltRoundedIcon from '@mui/icons-material/PeopleAltRounded';
 import PersonIcon from '@mui/icons-material/Person';
 import ScheduleIcon from '@mui/icons-material/Schedule';
 import VideocamIcon from '@mui/icons-material/Videocam';

@@ -1,19 +1,17 @@
-import Check from '@mui/icons-material/Check';
-import {
-  Autocomplete,
-  Box,
-  Button,
-  FormControl,
-  FormLabel,
-  Input,
-  Option,
-  Select,
-  Typography,
-} from '@mui/joy';
-import Alert from '@mui/joy/Alert';
 import { useState } from 'react';
 import { LoaderFunction, useLoaderData } from 'react-router-dom';
 import { User } from 'src/lib/auth';
+
+import CheckIcon from '@mui/icons-material/Check';
+import Alert from '@mui/joy/Alert';
+import Autocomplete from '@mui/joy/Autocomplete';
+import Box from '@mui/joy/Box';
+import Button from '@mui/joy/Button';
+import FormControl from '@mui/joy/FormControl';
+import FormLabel from '@mui/joy/FormLabel';
+import Input from '@mui/joy/Input';
+import Select from '@mui/joy/Select';
+import Typography from '@mui/joy/Typography';
 
 function ScheduleMeetingView() {
   const users = useLoaderData() as User[];
@@ -82,7 +80,7 @@ function ScheduleMeetingView() {
 
       {error && <Alert color='danger'>{error}</Alert>}
       {success && (
-        <Alert color='success' startDecorator={<Check />}>
+        <Alert color='success' startDecorator={<CheckIcon />}>
           Your meeting has been scheduled successfully.
         </Alert>
       )}
