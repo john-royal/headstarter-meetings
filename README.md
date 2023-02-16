@@ -12,7 +12,12 @@ A Platform where groups in Headstarter will be able to schedule times to meet on
 - [Languages](#languages)
 
 ## About
-The features include are: 1. React Platform with user authentication where people can log in and be put into groups 2. Shared calendar scheduler for users to input their times they are not available 3. Video call feature for groups to be able to talk to one another 4. Schedule team meetings on the calendar and send email (or some notification) to user before meeting
+The features include are: 
+1. React Platform with user authentication where people can log in and set up meetings with other members
+2. Shared calendar scheduler for users to input the times they are not available 
+3. Connectivity to Zoom accounts for groups to easily be able to video conference
+4. Schedule team meetings on the calendar and send email (or some notification) to user before meeting
+
 
 ## Getting Started
 These instructions will get you a copy of the project up and running on your local machine for development and testing purposes.
@@ -42,6 +47,19 @@ npm run dev
 ```
 rm -rf .git
 ```
+
+## Usage
+![alt text](./src/images/signinPage.png "sign-in page")
+1. Sign in to your account or sign up if you are just starting
+
+![alt text](./src/images/availabilityPage.png "availability page")
+2. Input times at which you are available in the availability page
+
+3. Connect your "headstarter meetings" account to your Zoom account by clicking the Zoom option in the side-menu
+
+![alt text](./src/images/meetingPage.png "meetings page") 
+4. Set up a meeting with other members. To make sure times line up, an error message will indicate if anyone is unavailable 
+
 
 ## Contributing
 Contributors names.
