@@ -43,4 +43,6 @@ rm -rf .git
 
 ## Contributing
 Contributors names.
-
+- John Royal
+- Maaz Hussaini
+- Russell Gomes
