@@ -49,15 +49,21 @@ rm -rf .git
 ```
 
 ## Usage
-![alt text](./src/images/signinPage.png "sign-in page")
+<img src="./src/images/signinPage.png" width= "500" height= auto/>
+
 1. Sign in to your account or sign up if you are just starting
 
-![alt text](./src/images/availabilityPage.png "availability page")
+
+<img src="./src/images/availabilityPage.png" width= "500" height= auto/>
+
 2. Input times at which you are available in the availability page
+
 
 3. Connect your "headstarter meetings" account to your Zoom account by clicking the Zoom option in the side-menu
 
-![alt text](./src/images/meetingPage.png "meetings page") 
+
+<img src="./src/images/meetingPage.png" width= "500" height= auto/>
+
 4. Set up a meeting with other members. To make sure times line up, an error message will indicate if anyone is unavailable 
 
 
