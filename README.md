@@ -54,12 +54,14 @@ rm -rf .git
 1. Sign in to your account or sign up if you are just starting
 
 
+
 <img src="./src/images/availabilityPage.png" width= "500" height= auto/>
 
 2. Input times at which you are available in the availability page
 
 
 3. Connect your "headstarter meetings" account to your Zoom account by clicking the Zoom option in the side-menu
+
 
 
 <img src="./src/images/meetingPage.png" width= "500" height= auto/>
